@@ -6,12 +6,14 @@ const authorize = require('../middleware/authorize')
 
 router.use(authenticate)
 
-router.post('/register', ControllerUser.register)
-router.post('/login', ControllerUser.login)
-router.post('/googleLogin', ControllerUser.googleLogin)
-router.get('/quotesList', ControllerQuote.quotesList)
-router.post('/addQuote', ControllerQuote.addQuote)
-router.get('/userQuotesList', ControllerQuote.userQuotesList)
-router.delete('/deleteQuote/:id',authorize, ControllerQuote.deleteQuote)
+//errHandler 
+//apiDoc fathan
+router.post('/register', ControllerUser.register)//rofi
+router.post('/login', ControllerUser.login)//amil
+router.post('/googleLogin', ControllerUser.googleLogin)//amil
+router.get('/quotesList', ControllerQuote.quotesList)//done
+router.post('/addQuote', ControllerQuote.addQuote)//romario
+router.get('/userQuotesList', ControllerQuote.userQuotesList)//romario
+router.delete('/deleteQuote/:id',authorize, ControllerQuote.deleteQuote)//fathan
 
 module.exports = router
