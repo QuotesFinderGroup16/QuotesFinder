@@ -56,9 +56,21 @@ axios({
     
   }
   static deleteQuote(req,res,next){
-    
+    console.log(req.params.id)
+    let id = +req.params.id
+    Quote.destroy({
+      where: {
+        id
+      }
+    })
+      .then(data => {
+        res.status(200).json(data)
+      })
+      .catch(err => {
+        console.log(err)
+        // next(err)
+      })
   }
 
 }
-ControllerQuote.quotesList()
 module.exports = ControllerQuote
