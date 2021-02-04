@@ -14,7 +14,7 @@ router.post('/googleLogin', ControllerUser.googleLogin)//amil
 router.get('/quotesList', ControllerQuote.quotesList)//done
 router.post('/addQuote', ControllerQuote.addQuote)//romario
 router.get('/userQuotesList', ControllerQuote.userQuotesList)//romario
-router.delete('/deleteQuote/:id', ControllerQuote.deleteQuote)//fathan
+router.delete('/deleteQuote/:id',authorize, ControllerQuote.deleteQuote)//fathan
 
 
 module.exports = router
