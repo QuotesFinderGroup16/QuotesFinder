@@ -18,7 +18,18 @@ $(document).ready(() => {
     e.preventDefault()
     login()
   })
+  // Google Login
+  $(".g-signin2").on("click", (event) => {
+    event.preventDefault()
+    onSignIn(googleUser)
+  })
+  // Logout
+  $('#logoutBtn').click((e) => {
+    e.preventDefault()
+    logout()
+  })
 })
+
 
 const auth = () => {
   if (!localStorage.getItem('access_token')) {
@@ -37,10 +48,30 @@ const auth = () => {
     $('#registerContainer').hide()
     $('#loginContainer').hide()
     $('#quotesTable').show()
+    getQuotes()
     $('#quotesTableUser').hide()
     $('#yourQuotes').show()
 
   }
+}
+// Google Login
+function onSignIn(googleUser) {
+  var id_token = googleUser.getAuthResponse().id_token;
+  $.ajax({
+    url: baseUrl + "googleLogin",
+    method: "POST",
+    data: {
+      googleToken:id_token
+    }
+  })
+    .done((response) => {
+      console.log(response)
+      localStorage.setItem("access_token", response.access_token)
+      auth()
+    })
+    .fail(err => {
+      console.log(err)
+    })
 }
 
 const register = () => {
@@ -88,4 +119,44 @@ const login = () => {
   .always(_ => {
     $('#loginForm').trigger('reset')
   })
+}
+// Logout
+const logout = () => {
+  localStorage.clear()
+  auth()
+  var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      console.log('User signed out.');
+  });
+}
+
+const getQuotes = () => {
+  $.ajax({
+    url: baseUrl + "quotesList",
+    method: "GET",
+    headers: {
+      access_token: localStorage.getItem("access_token")
+    }
+  })
+    .done(dataQuotes => {
+      $("#quotesTableBody").empty()
+      dataQuotes.forEach(value => {
+        $("#quotesTableBody").append(`
+          <tr>
+            <td>${value.author}</td>
+            <td>${value.quote}</td>
+            <td>
+              <a class="w3-btn w3-green" href="#" onclick="addQuotes(${value.id})">Add Quotes</a>
+            </td>
+          </tr>
+        `)
+      })
+    })
+    .fail((xhr, status) => {
+      console.log(xhr, status)
+    })
+}
+// Add Quotes Per User
+const addQuotes = () => {
+  
 }
