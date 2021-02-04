@@ -5,24 +5,24 @@ const {OAuth2Client} = require('google-auth-library');
 
 class ControllerUser{
   static register(req,res,next){
-    // const objUser = {
-    //   email: req.body.email,
-    //   password: req.body.password
-    // }
-    // User.create(objUser)
-    //   .then(user => {
-    //     res.status(201).json({
-    //       msg: 'Register Succes',
-    //       id: user.id,
-    //       email: user.email
-    //     })
-    //   })
-    //   .catch(err => {
-    //     const message = err.errors.map(element => element.message)
-    //     const error = { name: err.name, statusCode: 400, msg: message}
-    //     next(error)
-    //   })
-    // sori rof ini td gua cek buat di postman , dibenerin aja kalo salah asline udah bener sih wkwk
+    const { email,password } = req.body
+    User
+      .create({
+        email,
+        password
+      },{
+        returning: true
+      })
+      .then(user => {
+				res.status(201).json({
+          msg: 'Register success',
+          id: user.id,
+          email: user.email,
+        })
+      })
+      .catch(err => {
+        next(err)
+      })
   }
   static login(req,res,next){
     User.findOne({
