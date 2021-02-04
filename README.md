@@ -1,3 +1,4 @@
+
 # Quotes Finder
 
 Quotes Finder is an application to find the new quotes that inspired you along the day. This app has : 
@@ -346,5 +347,4 @@ example :
 }
 ```
 -------
-
 
