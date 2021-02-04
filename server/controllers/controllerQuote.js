@@ -46,14 +46,24 @@ axios({
       res.status(200).json(container)
     })
     .catch(err => {
-      console.log(err)
+      next(err)
     })     
   }
   static addQuote(req,res,next){
-    
+    let { author, quote } = req.body;
+
+    Quote.create({ author, quote, UserId: req.decoded.id })
+    .then(quote => res.status(201).json({ quote }))
+    .catch(err => next(err));    
   }
   static userQuotesList(req,res,next){
-    
+    Quote.findAll({
+      where: {
+        UserId: req.decoded.id
+      }
+    })
+    .then(quotes => res.status(200).json({ quotes }))
+    .catch(err => next(err));
   }
   static deleteQuote(req,res,next){
     
