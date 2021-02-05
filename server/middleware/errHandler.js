@@ -19,7 +19,7 @@ module.exports = (err, req, res, next) => {
     });
     status = 400
   } else if (err.name == "custom") {
-    error = error.push(err.msg)
+    error = error.concat(err.msg)
     status = err.statusCode
   } else {
     error.push(`Internal Server Error`)
