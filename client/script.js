@@ -5,10 +5,12 @@ $(document).ready(() => {
   $('#registerBtn').click(() => {
     $('#registerContainer').show()
     $('#loginContainer').hide()
+    $("#errorRegister").remove();
   })
   $('#loginBtn').click(() => {
     $('#registerContainer').hide()
     $('#loginContainer').show()
+    $("#errorLogin").remove();
   })
   $('#registerForm').submit((e) => {
     e.preventDefault()
@@ -105,7 +107,12 @@ const register = () => {
     auth()
   })
   .fail((xhr,txt) => {
-    console.log(xhr, txt);
+    $("#errorRegister").remove();
+    $("#registerContainer").append(`<div id="errorRegister"class="alert alert-danger"></div>`);
+    xhr.responseJSON.error[0].split(',\n').forEach(err => {
+      $("#errorRegister").append(`<li>${err}</li>`);
+    })
+    // console.log(xhr.responseJSON.error[0].split(',\n'), txt);
   })
   .always(_ => {
     $('#registerForm').trigger('reset')
@@ -129,6 +136,9 @@ const login = () => {
     auth()
   })
   .fail((xhr,txt) => {
+    $("#errorLogin").remove();
+    $("#loginContainer").append(`<div id="errorLogin" class="alert alert-danger"></div>`);
+    $("#errorLogin").append(xhr.responseJSON.error[0]);
     console.log(xhr, txt);
   })
   .always(_ => {

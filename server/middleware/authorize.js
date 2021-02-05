@@ -9,18 +9,15 @@ const authorize = (req,res,next) => {
       }
     })
     .then(quote => {
-      if (!quote) throw { msg: `there is no quote with id: ${id}` }
+      if (!quote) throw { name: "Not Found", msg: `there is no quote with id: ${id}`, statusCode: 404 }
       if (+req.decoded.id === quote.UserId) {
         next()
       } else {
-        res.status(401).json({
-          msg: 'Not authorized'
-        })
+        throw { name: "custom", msg: "Not authorized", statusCode: 401 }
       }
     })
     .catch(err => {
-      console.log(err);
-      res.status(500).json(err)
+      next(err)
     })
 }
 

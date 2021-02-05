@@ -10,7 +10,7 @@ class ControllerQuote{
         method: "get",
         url: `https://favqs.com/api/quotes`,
         headers: {
-            Authorization: 'Bearer 30bf29a24a694b15ef04fd7ed7a70d95'
+            Authorization: `Bearer ${process.env.API_KEY}`
           }
       })
       .then(response => {
@@ -46,7 +46,7 @@ class ControllerQuote{
           res.status(200).json(container)
         })
         .catch(err => {
-          console.log(err)
+          next(err)
         })         
   }
   
@@ -78,8 +78,7 @@ class ControllerQuote{
         res.status(200).json(data)
       })
       .catch(err => {
-        console.log(err)
-        // next(err)
+        next(err)
       })
   }
 

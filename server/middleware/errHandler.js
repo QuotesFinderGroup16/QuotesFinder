@@ -1,13 +1,13 @@
 module.exports = (err, req, res, next) => {
-  console.log(err , `<<<<<<< ini dari error handler`)
-  console.log(err.name , `<<<<<<< ini dari error handler`)
+  // console.log(err , `<<<<<<< ini dari error handler`)
+  // console.log(err.name , `<<<<<<< ini dari error handler`)
   let error = []
   let status = 500
   if (err.name == 'ReferenceError') {
     error.push(`Internal Server Error`)
   } else if (err.name == 'SequelizeValidationError') {
-    error = error.concat(err.msg)
-    status = err.statusCode
+    error = error.concat(err.message)
+    status = 400
   } else if (err.name == `Not Found`) {
     error.push(err.msg)
     status = err.statusCode
@@ -17,8 +17,13 @@ module.exports = (err, req, res, next) => {
     error = error.concat(err.msg)
     status = err.statusCode
   } else if (err.name == `SequelizeUniqueConstraintError`) {
+    error = error.concat(err.message)
+    status = err.statusCode
+  } else if (err.name == "custom") {
     error = error.concat(err.msg)
     status = err.statusCode
+  } else {
+    error.push(`Internal Server Error`)
   }
   res.status(status).json({ error })
 }
