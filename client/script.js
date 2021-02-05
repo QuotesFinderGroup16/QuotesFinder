@@ -14,10 +14,12 @@ $(document).ready(() => {
   })
   $('#registerForm').submit((e) => {
     e.preventDefault()
+    $("#errorRegister").remove();
     register()
   })
   $('#loginForm').submit((e) => {
     e.preventDefault()
+    $("#errorLogin").remove();
     login()
   })
   // Google Login
@@ -109,10 +111,10 @@ const register = () => {
   .fail((xhr,txt) => {
     $("#errorRegister").remove();
     $("#registerContainer").append(`<div id="errorRegister"class="alert alert-danger"></div>`);
-    xhr.responseJSON.error[0].split(',\n').forEach(err => {
+    xhr.responseJSON.error.forEach(err => {
       $("#errorRegister").append(`<li>${err}</li>`);
     })
-    // console.log(xhr.responseJSON.error[0].split(',\n'), txt);
+    // console.log(xhr, txt);
   })
   .always(_ => {
     $('#registerForm').trigger('reset')
