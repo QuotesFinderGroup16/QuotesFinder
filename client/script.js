@@ -38,6 +38,7 @@ $(document).ready(() => {
   $('#quotesFinder').click((e) => {
     e.preventDefault()
     if (localStorage.getItem('access_token')) {
+      getQuotes();
       $('#quotesTable').show()
       $('#quotesTableUser').hide()
     }
