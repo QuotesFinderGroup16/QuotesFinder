@@ -9,7 +9,7 @@ module.exports = (err, req, res, next) => {
     });
     status = 400
   } else if (err.name == `Not Found`) {
-    error.push(err.msg)
+    error.concat(err.msg)
     status = err.statusCode
   } else if (err.name == `SequelizeDatabaseError`) {
     error.push(`Internal server errors`)
@@ -19,7 +19,7 @@ module.exports = (err, req, res, next) => {
     });
     status = 400
   } else if (err.name == "custom") {
-    error = error.push(err.msg)
+    error = error.concat(err.msg)
     status = err.statusCode
   } else {
     error.push(`Internal Server Error`)
