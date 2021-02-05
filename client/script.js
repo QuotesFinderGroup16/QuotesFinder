@@ -28,10 +28,19 @@ $(document).ready(() => {
     e.preventDefault()
     logout()
   })
-  // Add Quotes
-  $('#addQuotes').click((e) => {
+
+  $('#yourQuotes').click((e) => {
     e.preventDefault()
-    addQuotes(id)
+    $('#quotesTable').hide()
+    $('#quotesTableUser').show()
+    userQuotesList()
+  })
+  $('#quotesFinder').click((e) => {
+    e.preventDefault()
+    if (localStorage.getItem('access_token')) {
+      $('#quotesTable').show()
+      $('#quotesTableUser').hide()
+    }
   })
 })
 
@@ -56,7 +65,7 @@ const auth = () => {
     getQuotes()
     $('#quotesTableUser').hide()
     $('#yourQuotes').show()
-
+    
   }
 }
 // Google Login
@@ -148,10 +157,10 @@ const getQuotes = () => {
       dataQuotes.forEach((value,i) => {
         $("#quotesTableBody").append(`
           <tr>
-            <td id="author-${value.id}">${value.author}</td>
-            <td id="quote-${value.id}">${value.quote}</td>
+            <td id="author-${i}">${value.author}</td>
+            <td id="quote-${i}">${value.quote}</td>
             <td>
-              <a class="w3-btn w3-green" id="addQuotes" href="#" onclick="addQuotes(${value.id})">Add Quotes</a>
+              <a class="w3-btn w3-green" id="addQuotes" onclick="addQuotes(${i})">Add Quotes</a>
             </td>
           </tr>
         `)
@@ -163,15 +172,17 @@ const getQuotes = () => {
 }
 // Add Quotes Per User
 const addQuotes = (id) => {
-  const author = $(`#author-${id}`)
-  const quote = $(`#quote-${id}`)
-
+  const author = $(`#author-${id}`).text()
+  const quote = $(`#quote-${id}`).text()
   $.ajax({
     url: baseUrl + `addQuote`,
     method: 'POST',
     data: {
       author,
       quote
+    },
+    headers: {
+      access_token : localStorage.getItem('access_token')
     }
   })
   .done(res => {
@@ -179,5 +190,49 @@ const addQuotes = (id) => {
   })
   .fail((xhr,txt) => {
     console.log(xhr, txt);
+  })
+}
+
+const userQuotesList = () => {
+  $.ajax({
+    url: baseUrl + "userQuotesList",
+    method: "GET",
+    headers: {
+      access_token: localStorage.getItem("access_token")
+    }
+  })
+    .done(dataQuotes => {
+    
+      $("#quotesTableUserBody").empty()
+      dataQuotes.quotes.forEach((value,i) => {
+        $("#quotesTableUserBody").append(`
+          <tr>
+            <td id="author-${value.id}">${value.author}</td>
+            <td id="quote-${value.id}">${value.quote}</td>
+            <td>
+              <a class="w3-btn w3-green" onclick="deleteQuote(${value.id})">Delete Quotes</a>
+            </td>
+          </tr>
+        `)
+      })
+    })
+    .fail((xhr, status) => {
+      console.log(xhr, status)
+    })
+}
+
+const deleteQuote = (id) => {
+  $.ajax({
+    url: baseUrl + `deleteQuote/${id}`,
+    method: 'DELETE',
+    headers: {
+      access_token: localStorage.getItem("access_token")
+    }
+  })
+  .done(res => {
+    userQuotesList()
+  })
+  .fail((xhr, status) => {
+    console.log(xhr, status)
   })
 }
