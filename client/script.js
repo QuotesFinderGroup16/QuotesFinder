@@ -160,7 +160,7 @@ const getQuotes = () => {
             <td id="author-${i}">${value.author}</td>
             <td id="quote-${i}">${value.quote}</td>
             <td>
-              <a class="w3-btn w3-green" id="addQuotes" onclick="addQuotes(${i})">Add Quotes</a>
+              <a class="btn btn-success" id="addQuotes" onclick="addQuotes(${i})">Add</a>
             </td>
           </tr>
         `)
@@ -210,7 +210,7 @@ const userQuotesList = () => {
             <td id="author-${value.id}">${value.author}</td>
             <td id="quote-${value.id}">${value.quote}</td>
             <td>
-              <a class="w3-btn w3-green" onclick="deleteQuote(${value.id})">Delete Quotes</a>
+              <a class="btn btn-danger" onclick="deleteQuote(${value.id})">Delete</a>
             </td>
           </tr>
         `)
