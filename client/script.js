@@ -28,6 +28,11 @@ $(document).ready(() => {
     e.preventDefault()
     logout()
   })
+  // Add Quotes
+  $('#addQuotes').click((e) => {
+    e.preventDefault()
+    addQuotes(id)
+  })
 })
 
 
@@ -140,13 +145,13 @@ const getQuotes = () => {
   })
     .done(dataQuotes => {
       $("#quotesTableBody").empty()
-      dataQuotes.forEach(value => {
+      dataQuotes.forEach((value,i) => {
         $("#quotesTableBody").append(`
           <tr>
-            <td>${value.author}</td>
-            <td>${value.quote}</td>
+            <td id="author-${value.id}">${value.author}</td>
+            <td id="quote-${value.id}">${value.quote}</td>
             <td>
-              <a class="w3-btn w3-green" href="#" onclick="addQuotes(${value.id})">Add Quotes</a>
+              <a class="w3-btn w3-green" id="addQuotes" href="#" onclick="addQuotes(${value.id})">Add Quotes</a>
             </td>
           </tr>
         `)
@@ -157,6 +162,22 @@ const getQuotes = () => {
     })
 }
 // Add Quotes Per User
-const addQuotes = () => {
-  
+const addQuotes = (id) => {
+  const author = $(`#author-${id}`)
+  const quote = $(`#quote-${id}`)
+
+  $.ajax({
+    url: baseUrl + `addQuote`,
+    method: 'POST',
+    data: {
+      author,
+      quote
+    }
+  })
+  .done(res => {
+    auth()
+  })
+  .fail((xhr,txt) => {
+    console.log(xhr, txt);
+  })
 }

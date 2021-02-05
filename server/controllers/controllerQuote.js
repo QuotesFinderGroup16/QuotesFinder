@@ -51,11 +51,18 @@ class ControllerQuote{
   }
   
   static addQuote(req,res,next){
-    let { author, quote } = req.body;
+    // let { author, quote } = req.body;
 
-    Quote.create({ author, quote, UserId: req.decoded.id })
-    .then(quote => res.status(201).json({ quote }))
-    .catch(err => next(err));    
+    // Quote.create({ author, quote, UserId: req.decoded.id })
+    // .then(quote => res.status(201).json({ quote }))
+    // .catch(err => next(err));   
+    // Quote.create({
+    //   where: {
+    //     UserId: req.decoded.id
+    //   }
+    // }) 
+    // .then(quote => res.status(201).json({ quote }))
+    // .catch(err => next(err));  
   }
   static userQuotesList(req,res,next){
     Quote.findAll({
