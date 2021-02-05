@@ -56,7 +56,6 @@ class ControllerUser{
       .then((ticket) => {
         const payload = ticket.getPayload()
         email = payload.email
-        // console.log(payload)
         return User.findOne({
           where: {
             email
@@ -88,7 +87,6 @@ class ControllerUser{
         }
       })
       .catch(err => {
-        // console.log(err)
         next(err)
       })
   }
