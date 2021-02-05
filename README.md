@@ -6,178 +6,110 @@ Quotes Finder is an application to find the new quotes that inspired you along t
 * JSON formatted response
 
 ##  Endpoint list Quotes Finder
+
+- `POST /register`
+- `POST /login`
+- `POST /googleLogin`
+- `GET /quoteList`
+- `GET /userQuoteList`
+- `DELETE /deleteQuote/:id`
+
 ### POST /register
 
 > Create New Account
 
-_Request Header_
-```
+Request:
+
+```json
 {
-    <no data>
+  "email": "string",
+  "password": "string"
 }
 ```
 
-_Request Body_
-```
+Response : 
+
+- status: 201
+-body:
+
+```json
 {
-  "email": "<your email?>",
-  "password": "<your password>"
+  "msg" : "Register success",
+  "id" : "<integer>",
+  "email": "<string>",
 }
 ```
-
-_Response (201)_
-```
-example :
-
-
-{
-    "email": "<todo title>"
-}
-
-```
-
-_Response (400 - Validataion Error)_
-```
-example :
-
-{
-  "message": "email is required"
-}
-```
-
-
-_Response (500 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid request"
-}
-```
----
 
 ### POST /login
 
 > Login Account
 
-_Request Header_
-```
-{
-  <No Data>
-} 
-```
+Request: 
 
-_Request Body_
-```
+- data:
+
+```json
 {
-  email: "<your email>",
-  password: "<your password>"
+  "email": "string",
+  "password": "string"
 }
 ```
 
-_Response (200)_
-```
-example :
+Response: 
 
+- status : 200
+- data :
 
-
-{
-    "email": "<your email>"
-}
-
-```
-_Response (400)_
-```
-example :
-
-
-
-{
-    "message": "email is required"
-}
-
-```
-
-
-_Response (500 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid request"
+```json
+{   
+    "id" : "<integer>",
+    "email": "<string>"
 }
 ```
----
 
 ### POST /googleLogin
 
 > Login with OAuth Google 
 
-_Request Header_
-```
+Request:
+
+- data: 
+
+```json
 {
-  <No Data>
+  "id token": "<your token>"
 }
 ```
 
-_Request Body_
-```
+Response: 
+- status : 200
+- data :
+
+```json
 {
-  "email" : "<your email>",
-  ...
+  "id" : "integer",
+  "email" : "string"
 }
 ```
 
-_Response (200)_
-```
-example :
-
-
-{
-    email: "<your email>"
-}
-
-```
-_Response (400 - Validation Error)_
-```
-example :
-
-{
-  "message": "Email is required"
-}
-```
-
-_Response (500 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid request"
-}
-```
----
 ### GET /quotesList
 
 > Show quotes list from FavQs, Quotable, and Quote Garden API 
 
-_Request Header_
-```
+Request : 
+- data :
+```json
 {
   "access_token": "<your access token>"
 }
 ```
 
-_Request Body_
-```
-{
-  <No Data>
-}
-```
 
-_Response (200)_
-```
-example :
+Response:
+- status 200,
+- data :
 
+```json
 
 {
     "author": "<author name>",
@@ -186,164 +118,75 @@ example :
 ...
 
 ```
-_Response (404 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid Data"
-}
-```
-
-_Response (500 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid request"
-}
-```
----
 
 ### POST /addQuote
 
 > Add new selection quotes 
 
-_Request Header_
-```
+Request:
+- data :
+
+```json 
 {
-  "token": "<your access token>"
+  "access_token": "<your access token>"
 }
 ```
 
-_Request Body_
-```
-{
-  <No Data>
-}
-```
+Response :
 
-_Response (200)_
-```
-example :
-
-
+- status 200,
+- data :
+```json
 {
     "author": "<author name>",
     "quotes": "<quotes>"
 }
-
 ```
 
-_Response (404 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid Data"
-}
-```
-
-_Response (500 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid request"
-}
-```
 ### GET /userQuoteLists
 
 > Show all selection quotes 
 
-_Request Header_
-```
+
+Request :
+- data :
+```json
 {
-  "token": "<your access token>"
+  "access_token": "<your access token>"
 }
 ```
 
-_Request Body_
-```
-{
-  <No Data>
-}
-```
+Response :
+- status: 200
+- data: 
 
-_Response (200)_
-```
-example :
-
-
+```json
 {
     "author": "<author name>",
     "quotes": "<quotes>"
 },
 ...
-
 ```
 
-_Response (404 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid Data"
-}
-```
-
-_Response (500 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid request"
-}
-```
 ### DELETE /deleteQuote/:id
 
 > Delete selection quote 
 
-_Request Header_
-```
+Request :
+- data:
+
+```json
 {
-  "token": "<your access token>"
+  "access_token": "<your access token>"
 }
 ```
 
-_Request Body_
-```
+Response
+- status 200
+- data :
+```json
 {
-  <No Data>
-}
-```
-
-_Response (200)_
-```
-example :
-
-
-{
-      message : "quote success to delete"
-}
-
-```
-
-_Response (404 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid Data"
-}
-```
-
-_Response (500 - Server Error)_
-```
-example :
-
-{
-  "message": "Invalid request"
+    "message" : "quote success to delete"
 }
 ```
 -------
