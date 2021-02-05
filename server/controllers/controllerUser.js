@@ -31,9 +31,9 @@ class ControllerUser{
       }
     })
       .then(user => {
-        if (!user) throw { msg: `Invalid email or password` }
+        if (!user) throw { name: "custom", msg: `Invalid email or password`, statusCode: 400 }
         const comparePassword = compare(req.body.password, user.password)
-        if(!comparePassword) throw { msg: `Invalid email or password` }
+        if(!comparePassword) throw { name: "custom", msg: `Invalid email or password`, statusCode: 400 }
 
         const access_token = generateToken({
           id: user.id,
@@ -43,8 +43,7 @@ class ControllerUser{
         res.status(200).json({ access_token })
       })
       .catch(err => {
-        const error = err.msg || `Internal server error`
-        res.status(400).json(error)
+        next(err)
       })
   }
   static googleLogin(req,res,next){
@@ -57,7 +56,6 @@ class ControllerUser{
       .then((ticket) => {
         const payload = ticket.getPayload()
         email = payload.email
-        // console.log(payload)
         return User.findOne({
           where: {
             email
@@ -80,14 +78,15 @@ class ControllerUser{
         }
       })
       .then(registeredUser => {
-        const token = generateToken({
-          id: registeredUser.id,
-          email: registeredUser.email
-        })
-        res.status(201).json({ access_token:token })
+        if(registeredUser) {
+           const token = generateToken({
+            id: registeredUser.id,
+            email: registeredUser.email
+          })
+          res.status(201).json({ access_token:token })
+        }
       })
       .catch(err => {
-        console.log(err)
         next(err)
       })
   }

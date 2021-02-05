@@ -5,17 +5,21 @@ $(document).ready(() => {
   $('#registerBtn').click(() => {
     $('#registerContainer').show()
     $('#loginContainer').hide()
+    $("#errorRegister").remove();
   })
   $('#loginBtn').click(() => {
     $('#registerContainer').hide()
     $('#loginContainer').show()
+    $("#errorLogin").remove();
   })
   $('#registerForm').submit((e) => {
     e.preventDefault()
+    $("#errorRegister").remove();
     register()
   })
   $('#loginForm').submit((e) => {
     e.preventDefault()
+    $("#errorLogin").remove();
     login()
   })
   // Google Login
@@ -105,7 +109,12 @@ const register = () => {
     auth()
   })
   .fail((xhr,txt) => {
-    console.log(xhr, txt);
+    $("#errorRegister").remove();
+    $("#registerContainer").append(`<div id="errorRegister"class="alert alert-danger"></div>`);
+    xhr.responseJSON.error.forEach(err => {
+      $("#errorRegister").append(`<li>${err}</li>`);
+    })
+    // console.log(xhr, txt);
   })
   .always(_ => {
     $('#registerForm').trigger('reset')
@@ -129,6 +138,9 @@ const login = () => {
     auth()
   })
   .fail((xhr,txt) => {
+    $("#errorLogin").remove();
+    $("#loginContainer").append(`<div id="errorLogin" class="alert alert-danger"></div>`);
+    $("#errorLogin").append(xhr.responseJSON.error[0]);
     console.log(xhr, txt);
   })
   .always(_ => {

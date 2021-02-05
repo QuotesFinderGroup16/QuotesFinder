@@ -5,12 +5,9 @@ const authenticate = (req,res,next) => {
     const access_token = req.headers.access_token
     const decoded = jwt.verify(access_token, process.env.SECRET)
     req.decoded = decoded
-    // console.log(decoded);
     next()
   } catch (err){
-    res.status(401).json({
-      msg: 'Invalid token'
-    })
+    next({name: "custom", msg: 'Invalid token', statusCode: 401})
   }
 }
 
